@@ -1,12 +1,53 @@
+/* Landing Page with Background */
 .search-page {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
+  position: relative;
+  min-height: 100vh;
 }
 
+/* Subtle background image - works with both themes */
+.search-page::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1920&q=80');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  opacity: 0.3;
+  z-index: -1;
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+/* Dark mode - adjust background */
+body.dark-mode .search-page::before {
+  opacity: 0.5;
+  filter: brightness(0.6) contrast(1.1);
+}
+
+/* Enhanced header with glass effect */
 .search-header {
   text-align: center;
   margin-bottom: 2rem;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  position: relative;
+  z-index: 1;
+}
+
+body.dark-mode .search-header {
+  background: rgba(45, 45, 45, 0.7);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .search-header h1 {
@@ -20,6 +61,7 @@
   font-size: 1.1rem;
 }
 
+/* Glass effect for search form */
 .search-form {
   display: flex;
   gap: 1rem;
@@ -27,6 +69,19 @@
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  position: relative;
+  z-index: 1;
+}
+
+body.dark-mode .search-form {
+  background: rgba(45, 45, 45, 0.8);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .search-input {
@@ -72,11 +127,15 @@
   margin-bottom: 1rem;
   text-align: center;
   border-left: 4px solid #c62828;
+  position: relative;
+  z-index: 1;
 }
 
 .loading-spinner, .loading-container {
   text-align: center;
   padding: 3rem;
+  position: relative;
+  z-index: 1;
 }
 
 .spinner {
@@ -92,6 +151,11 @@
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.search-results {
+  position: relative;
+  z-index: 1;
 }
 
 .search-results h2 {
@@ -123,6 +187,7 @@
   flex-shrink: 0;
   width: 128px;
   height: 180px;
+  position: relative;
 }
 
 .book-thumbnail img {
@@ -226,6 +291,8 @@
   text-align: center;
   padding: 4rem 2rem;
   color: #666;
+  position: relative;
+  z-index: 1;
 }
 
 .welcome-message h2 {
@@ -233,30 +300,6 @@
   margin-bottom: 1rem;
   font-size: 2rem;
 }
-
-@media (max-width: 768px) {
-  .search-page {
-    padding: 1rem;
-  }
-
-  .search-header h1 {
-    font-size: 2rem;
-  }
-
-  .search-form {
-    flex-direction: column;
-  }
-
-  .book-card {
-    flex-direction: column;
-  }
-
-  .book-thumbnail {
-    width: 100%;
-    height: 240px;
-  }
-}
-
 
 /* Pagination Styles */
 .results-header {
@@ -344,38 +387,13 @@
   font-weight: 600;
 }
 
-/* Mobile Responsive for Pagination */
-@media (max-width: 768px) {
-  .results-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .pagination {
-    gap: 0.3rem;
-  }
-
-  .pagination-btn {
-    padding: 0.5rem 0.8rem;
-    font-size: 0.85rem;
-  }
-
-  .page-number {
-    min-width: 35px;
-    height: 35px;
-    font-size: 0.85rem;
-  }
-
-  .page-numbers {
-    gap: 0.3rem;
-  }
-}
-
 /* Filter Styles */
 .filter-toggle-container {
   display: flex;
   justify-content: center;
   margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
 }
 
 .filter-toggle-btn {
@@ -414,6 +432,8 @@
   padding: 1.5rem;
   margin-bottom: 2rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  position: relative;
+  z-index: 1;
 }
 
 .filter-section {
@@ -517,15 +537,6 @@
   background: #e0e0e0;
 }
 
-.results-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
 .active-filters {
   display: flex;
   gap: 0.5rem;
@@ -555,12 +566,58 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.book-thumbnail {
-  position: relative;
-}
-
-/* Mobile Responsive for Filters */
+/* Mobile Responsive */
 @media (max-width: 768px) {
+  .search-page {
+    padding: 1rem;
+  }
+
+  .search-header {
+    padding: 1.5rem 1rem;
+  }
+
+  .search-header h1 {
+    font-size: 2rem;
+  }
+
+  .search-form {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .book-card {
+    flex-direction: column;
+  }
+
+  .book-thumbnail {
+    width: 100%;
+    height: 240px;
+  }
+
+  .results-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pagination {
+    gap: 0.3rem;
+  }
+
+  .pagination-btn {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .page-number {
+    min-width: 35px;
+    height: 35px;
+    font-size: 0.85rem;
+  }
+
+  .page-numbers {
+    gap: 0.3rem;
+  }
+
   .filters-panel {
     padding: 1rem;
   }
@@ -578,25 +635,30 @@
     flex: none;
   }
 
-  .results-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
   .active-filters {
     width: 100%;
   }
 }
 
-/* Dark Mode Styles for Search Page */
+/* Dark Mode Styles */
 body.dark-mode .search-page {
   background: var(--bg-primary);
   color: var(--text-primary);
 }
 
+body.dark-mode .search-header {
+  background: rgba(45, 45, 45, 0.7);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
 body.dark-mode .search-header h1,
 body.dark-mode .search-header p {
   color: var(--text-primary);
+}
+
+body.dark-mode .search-form {
+  background: rgba(45, 45, 45, 0.8);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 body.dark-mode .search-input {
@@ -716,4 +778,3 @@ body.dark-mode .active-filter-tag {
   color: var(--button-primary);
   border-color: var(--button-primary);
 }
-
