@@ -228,6 +228,19 @@ axiosInstance.interceptors.response.use(
 - Edit reviews anytime
 - Maximum 1000 characters per review
 
+### Pagination
+- 10 books displayed per page
+- Previous/Next navigation buttons
+- Direct page number selection
+- Smooth scrolling on page change
+- Total results count display
+
+### Search Filters
+- **Free E-books:** Filter to show only free books
+- **Print Type:** Filter by Books or Magazines
+- **Active Filter Indicators:** Visual badges show applied filters
+- **Reset Filters:** Quick reset to default search
+
 ## 🧪 Testing the Application
 
 ### Manual Testing Checklist
