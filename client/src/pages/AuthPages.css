@@ -118,5 +118,50 @@
   }
 }
 
+/* Dark Mode Styles for Auth Pages */
+body.dark-mode .auth-page {
+  background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+}
+
+body.dark-mode .auth-container {
+  background: var(--card-bg);
+}
+
+body.dark-mode .auth-header h1 {
+  color: var(--text-primary);
+}
+
+body.dark-mode .auth-header p {
+  color: var(--text-secondary);
+}
+
+body.dark-mode .form-group label {
+  color: var(--text-primary);
+}
+
+body.dark-mode .form-group input {
+  background: var(--input-bg);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+body.dark-mode .form-group input:focus {
+  border-color: var(--button-primary);
+}
+
+body.dark-mode .auth-footer p {
+  color: var(--text-secondary);
+}
+
+body.dark-mode .auth-footer a {
+  color: var(--button-primary);
+}
+
+body.dark-mode .error-message {
+  background: #4a2626;
+  color: #ff8a80;
+  border-color: #d32f2f;
+}
+
 
 

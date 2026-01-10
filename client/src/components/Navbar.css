@@ -177,5 +177,41 @@
   }
 }
 
+/* Theme Toggle Button */
+.theme-toggle {
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  color: white;
+  font-size: 1.5rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+/* Mobile adjustments for theme toggle */
+@media (max-width: 768px) {
+  .theme-toggle {
+    margin: 1rem;
+    width: calc(100% - 2rem);
+    padding: 0.8rem;
+  }
+}
+
+/* Dark Mode Navbar */
+body.dark-mode .navbar {
+  background: var(--navbar-gradient);
+}
+
+
+
 
 

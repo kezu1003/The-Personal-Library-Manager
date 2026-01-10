@@ -241,5 +241,93 @@
   }
 }
 
+/* Dark Mode Styles for Library Page */
+body.dark-mode .library-page {
+  background: var(--bg-primary);
+}
+
+body.dark-mode .library-header h1 {
+  color: var(--text-primary);
+}
+
+body.dark-mode .library-header p {
+  color: var(--text-secondary);
+}
+
+body.dark-mode .filter-btn {
+  background: var(--card-bg);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+body.dark-mode .filter-btn:hover {
+  border-color: var(--button-primary);
+  color: var(--button-primary);
+}
+
+body.dark-mode .filter-btn.active {
+  background: var(--button-primary);
+  color: white;
+  border-color: var(--button-primary);
+}
+
+body.dark-mode .library-book-card {
+  background: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+body.dark-mode .book-title {
+  color: var(--text-primary);
+}
+
+body.dark-mode .book-subtitle,
+body.dark-mode .book-description {
+  color: var(--text-secondary);
+}
+
+body.dark-mode .status-select {
+  background: var(--input-bg);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+body.dark-mode .personal-review {
+  background: var(--input-bg);
+  color: var(--text-secondary);
+}
+
+body.dark-mode .review-edit textarea {
+  background: var(--input-bg);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+body.dark-mode .btn-edit-review {
+  background: var(--input-bg);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+body.dark-mode .btn-edit-review:hover {
+  background: var(--border-color);
+}
+
+body.dark-mode .empty-state h2,
+body.dark-mode .empty-state p {
+  color: var(--text-primary);
+}
+
+body.dark-mode .btn-primary {
+  background: var(--button-primary);
+}
+
+body.dark-mode .btn-primary:hover {
+  background: var(--button-primary-hover);
+}
+
+body.dark-mode .no-image {
+  background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+}
+
 
 

@@ -587,3 +587,133 @@
     width: 100%;
   }
 }
+
+/* Dark Mode Styles for Search Page */
+body.dark-mode .search-page {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+body.dark-mode .search-header h1,
+body.dark-mode .search-header p {
+  color: var(--text-primary);
+}
+
+body.dark-mode .search-input {
+  background: var(--input-bg);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+body.dark-mode .search-input::placeholder {
+  color: var(--text-secondary);
+}
+
+body.dark-mode .search-button {
+  background: var(--button-primary);
+}
+
+body.dark-mode .search-button:hover:not(:disabled) {
+  background: var(--button-primary-hover);
+}
+
+body.dark-mode .book-card {
+  background: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+body.dark-mode .book-title {
+  color: var(--text-primary);
+}
+
+body.dark-mode .book-subtitle,
+body.dark-mode .book-description {
+  color: var(--text-secondary);
+}
+
+body.dark-mode .no-image {
+  background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+}
+
+body.dark-mode .filters-panel {
+  background: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+body.dark-mode .filter-label,
+body.dark-mode .filter-label-text,
+body.dark-mode .radio-label {
+  color: var(--text-primary);
+}
+
+body.dark-mode .btn-apply-filters {
+  background: var(--button-primary);
+}
+
+body.dark-mode .btn-apply-filters:hover {
+  background: var(--button-primary-hover);
+}
+
+body.dark-mode .btn-reset-filters {
+  background: var(--input-bg);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+body.dark-mode .btn-reset-filters:hover {
+  background: var(--border-color);
+}
+
+body.dark-mode .pagination-btn {
+  background: var(--button-primary);
+}
+
+body.dark-mode .pagination-btn:hover:not(:disabled) {
+  background: var(--button-primary-hover);
+}
+
+body.dark-mode .page-number {
+  background: var(--card-bg);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+body.dark-mode .page-number:hover {
+  border-color: var(--button-primary);
+  color: var(--button-primary);
+}
+
+body.dark-mode .page-number.active {
+  background: var(--button-primary);
+  color: white;
+  border-color: var(--button-primary);
+}
+
+body.dark-mode .error-message {
+  background: #4a2626;
+  color: #ff8a80;
+  border-color: #d32f2f;
+}
+
+body.dark-mode .welcome-message h2,
+body.dark-mode .welcome-message p {
+  color: var(--text-primary);
+}
+
+body.dark-mode .filter-toggle-btn {
+  background: var(--card-bg);
+  border-color: var(--button-primary);
+  color: var(--button-primary);
+}
+
+body.dark-mode .filter-toggle-btn:hover {
+  background: var(--button-primary);
+  color: white;
+}
+
+body.dark-mode .active-filter-tag {
+  background: rgba(74, 158, 255, 0.2);
+  color: var(--button-primary);
+  border-color: var(--button-primary);
+}
+
