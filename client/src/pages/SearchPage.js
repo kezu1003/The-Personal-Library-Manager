@@ -11,12 +11,17 @@ const SearchPage = () => {
   const [error, setError] = useState('');
   const [hasSearched, setHasSearched] = useState(false);
   const [savingBookId, setSavingBookId] = useState(null);
+  
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
+  const [booksPerPage, setBooksPerPage] = useState(10);
 
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
+  const handleSearch = async (e, page = 1) => {
+    if (e) e.preventDefault();
     
     if (!query.trim()) {
       setError('Please enter a search term');
@@ -28,8 +33,11 @@ const SearchPage = () => {
     setHasSearched(true);
 
     try {
-      const data = await searchBooks(query);
+      const data = await searchBooks(query, page);
       setBooks(data.data || []);
+      setTotalItems(data.totalItems || 0);
+      setCurrentPage(data.currentPage || 1);
+      setBooksPerPage(data.booksPerPage || 10);
       
       if (data.data.length === 0) {
         setError('No books found. Try a different search term.');
@@ -64,6 +72,52 @@ const SearchPage = () => {
     return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
   };
 
+  // Pagination functions
+  const totalPages = Math.ceil(totalItems / booksPerPage);
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      const newPage = currentPage - 1;
+      setCurrentPage(newPage);
+      handleSearch(null, newPage);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      const newPage = currentPage + 1;
+      setCurrentPage(newPage);
+      handleSearch(null, newPage);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const handlePageClick = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    handleSearch(null, pageNumber);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Generate page numbers to display
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxPagesToShow = 5;
+    
+    let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
+    let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+    
+    if (endPage - startPage < maxPagesToShow - 1) {
+      startPage = Math.max(1, endPage - maxPagesToShow + 1);
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+    
+    return pages;
+  };
+
   return (
     <div className="search-page">
       <div className="search-header">
@@ -95,7 +149,13 @@ const SearchPage = () => {
 
       {!loading && hasSearched && books.length > 0 && (
         <div className="search-results">
-          <h2>Found {books.length} book(s)</h2>
+          <div className="results-header">
+            <h2>Found {totalItems} book(s)</h2>
+            <p className="page-info">
+              Showing page {currentPage} of {totalPages}
+            </p>
+          </div>
+
           <div className="books-grid">
             {books.map((book) => (
               <div key={book.googleId} className="book-card">
@@ -141,6 +201,55 @@ const SearchPage = () => {
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Pagination Controls */}
+          <div className="pagination">
+            <button 
+              onClick={handlePreviousPage}
+              disabled={currentPage === 1}
+              className="pagination-btn"
+            >
+              ← Previous
+            </button>
+
+            <div className="page-numbers">
+              {currentPage > 3 && (
+                <>
+                  <button onClick={() => handlePageClick(1)} className="page-number">
+                    1
+                  </button>
+                  {currentPage > 4 && <span className="page-ellipsis">...</span>}
+                </>
+              )}
+
+              {getPageNumbers().map(pageNum => (
+                <button
+                  key={pageNum}
+                  onClick={() => handlePageClick(pageNum)}
+                  className={`page-number ${currentPage === pageNum ? 'active' : ''}`}
+                >
+                  {pageNum}
+                </button>
+              ))}
+
+              {currentPage < totalPages - 2 && (
+                <>
+                  {currentPage < totalPages - 3 && <span className="page-ellipsis">...</span>}
+                  <button onClick={() => handlePageClick(totalPages)} className="page-number">
+                    {totalPages}
+                  </button>
+                </>
+              )}
+            </div>
+
+            <button 
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages}
+              className="pagination-btn"
+            >
+              Next →
+            </button>
           </div>
         </div>
       )}

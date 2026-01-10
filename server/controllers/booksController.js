@@ -1,4 +1,6 @@
 import Book from '../models/Book.js';
+import axios from 'axios';
+
 
 // @desc    Get all books for logged-in user
 // @route   GET /api/books
@@ -172,7 +174,9 @@ export const deleteBook = async (req, res) => {
 // @access  Public
 export const searchGoogleBooks = async (req, res) => {
     try {
-        const { query } = req.query;
+        const { query, page = 1 } = req.query; // Add page parameter
+        const booksPerPage = 10; // Books per page
+        const startIndex = (page - 1) * booksPerPage;
 
         if (!query) {
             return res.status(400).json({
@@ -181,11 +185,9 @@ export const searchGoogleBooks = async (req, res) => {
             });
         }
 
-        // Dynamically import axios (since you're using ES6 modules)
-        const axios = (await import('axios')).default;
-
+        // Fetch from Google Books with pagination
         const response = await axios.get(
-            `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=20`
+            `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=${booksPerPage}&startIndex=${startIndex}`
         );
 
         const books = response.data.items?.map(item => ({
@@ -201,10 +203,13 @@ export const searchGoogleBooks = async (req, res) => {
         res.status(200).json({
             success: true,
             count: books.length,
+            totalItems: response.data.totalItems || 0, // Total available books
+            currentPage: parseInt(page),
+            booksPerPage: booksPerPage,
             data: books
         });
     } catch (error) {
-        console.error('Search Google Books error:', error);
+        console.error('Search Google Books error:', error.message);
         res.status(500).json({
             success: false,
             message: 'Error searching books from Google Books API'

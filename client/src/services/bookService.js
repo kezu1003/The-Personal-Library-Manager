@@ -1,7 +1,7 @@
 import axiosInstance from '../api/axiosConfig';
 
-export const searchBooks = async (query) => {
-  const response = await axiosInstance.get(`/books/search?query=${query}`);
+export const searchBooks = async (query, page = 1) => {
+  const response = await axiosInstance.get(`/books/search?query=${query}&page=${page}`);
   return response.data;
 };
 
@@ -24,7 +24,3 @@ export const deleteBook = async (id) => {
   const response = await axiosInstance.delete(`/books/${id}`);
   return response.data;
 };
-
-
-
-
