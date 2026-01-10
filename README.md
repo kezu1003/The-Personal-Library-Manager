@@ -241,6 +241,14 @@ axiosInstance.interceptors.response.use(
 - **Active Filter Indicators:** Visual badges show applied filters
 - **Reset Filters:** Quick reset to default search
 
+### Dark Mode
+- Toggle button in navbar (🌙/☀️)
+- Smooth theme transitions
+- Preference saved in localStorage
+- Affects entire application
+- Custom color scheme for dark mode
+
+
 ## 🧪 Testing the Application
 
 ### Manual Testing Checklist
