@@ -17,6 +17,11 @@ const SearchPage = () => {
   const [totalItems, setTotalItems] = useState(0);
   const [booksPerPage, setBooksPerPage] = useState(10);
 
+  // Filter states
+  const [freeEbooksOnly, setFreeEbooksOnly] = useState(false);
+  const [printType, setPrintType] = useState('all');
+  const [showFilters, setShowFilters] = useState(false);
+
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
@@ -33,14 +38,19 @@ const SearchPage = () => {
     setHasSearched(true);
 
     try {
-      const data = await searchBooks(query, page);
+      const filters = {
+        freeEbooks: freeEbooksOnly,
+        printType: printType
+      };
+
+      const data = await searchBooks(query, page, filters);
       setBooks(data.data || []);
       setTotalItems(data.totalItems || 0);
       setCurrentPage(data.currentPage || 1);
       setBooksPerPage(data.booksPerPage || 10);
       
       if (data.data.length === 0) {
-        setError('No books found. Try a different search term.');
+        setError('No books found. Try different filters or search terms.');
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to search books. Please try again.');
@@ -72,6 +82,23 @@ const SearchPage = () => {
     return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
   };
 
+  // Reset filters
+  const handleResetFilters = () => {
+    setFreeEbooksOnly(false);
+    setPrintType('all');
+    if (hasSearched) {
+      setCurrentPage(1);
+      handleSearch(null, 1);
+    }
+  };
+
+  // Apply filters
+  const handleApplyFilters = () => {
+    setCurrentPage(1);
+    handleSearch(null, 1);
+    setShowFilters(false);
+  };
+
   // Pagination functions
   const totalPages = Math.ceil(totalItems / booksPerPage);
 
@@ -99,7 +126,6 @@ const SearchPage = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Generate page numbers to display
   const getPageNumbers = () => {
     const pages = [];
     const maxPagesToShow = 5;
@@ -138,6 +164,81 @@ const SearchPage = () => {
         </button>
       </form>
 
+      {/* Filter Toggle Button */}
+      <div className="filter-toggle-container">
+        <button 
+          onClick={() => setShowFilters(!showFilters)} 
+          className="filter-toggle-btn"
+        >
+          🔍 {showFilters ? 'Hide Filters' : 'Show Filters'}
+          {(freeEbooksOnly || printType !== 'all') && (
+            <span className="filter-badge">Active</span>
+          )}
+        </button>
+      </div>
+
+      {/* Filter Panel */}
+      {showFilters && (
+        <div className="filters-panel">
+          <div className="filter-section">
+            <label className="filter-label">
+              <input
+                type="checkbox"
+                checked={freeEbooksOnly}
+                onChange={(e) => setFreeEbooksOnly(e.target.checked)}
+                className="filter-checkbox"
+              />
+              <span>📖 Free E-books Only</span>
+            </label>
+          </div>
+
+          <div className="filter-section">
+            <label className="filter-label-text">Print Type:</label>
+            <div className="radio-group">
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  value="all"
+                  checked={printType === 'all'}
+                  onChange={(e) => setPrintType(e.target.value)}
+                  className="filter-radio"
+                />
+                <span>All</span>
+              </label>
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  value="books"
+                  checked={printType === 'books'}
+                  onChange={(e) => setPrintType(e.target.value)}
+                  className="filter-radio"
+                />
+                <span>📚 Books</span>
+              </label>
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  value="magazines"
+                  checked={printType === 'magazines'}
+                  onChange={(e) => setPrintType(e.target.value)}
+                  className="filter-radio"
+                />
+                <span>📰 Magazines</span>
+              </label>
+            </div>
+          </div>
+
+          <div className="filter-actions">
+            <button onClick={handleApplyFilters} className="btn-apply-filters">
+              Apply Filters
+            </button>
+            <button onClick={handleResetFilters} className="btn-reset-filters">
+              Reset
+            </button>
+          </div>
+        </div>
+      )}
+
       {error && <div className="error-message">{error}</div>}
 
       {loading && (
@@ -151,6 +252,14 @@ const SearchPage = () => {
         <div className="search-results">
           <div className="results-header">
             <h2>Found {totalItems} book(s)</h2>
+            <div className="active-filters">
+              {freeEbooksOnly && <span className="active-filter-tag">📖 Free E-books</span>}
+              {printType !== 'all' && (
+                <span className="active-filter-tag">
+                  {printType === 'books' ? '📚 Books' : '📰 Magazines'}
+                </span>
+              )}
+            </div>
             <p className="page-info">
               Showing page {currentPage} of {totalPages}
             </p>
@@ -165,6 +274,7 @@ const SearchPage = () => {
                   ) : (
                     <div className="no-image">No Image</div>
                   )}
+                  {book.isFree && <span className="free-badge">FREE</span>}
                 </div>
                 
                 <div className="book-details">
@@ -204,53 +314,55 @@ const SearchPage = () => {
           </div>
 
           {/* Pagination Controls */}
-          <div className="pagination">
-            <button 
-              onClick={handlePreviousPage}
-              disabled={currentPage === 1}
-              className="pagination-btn"
-            >
-              ← Previous
-            </button>
+          {totalPages > 1 && (
+            <div className="pagination">
+              <button 
+                onClick={handlePreviousPage}
+                disabled={currentPage === 1}
+                className="pagination-btn"
+              >
+                ← Previous
+              </button>
 
-            <div className="page-numbers">
-              {currentPage > 3 && (
-                <>
-                  <button onClick={() => handlePageClick(1)} className="page-number">
-                    1
+              <div className="page-numbers">
+                {currentPage > 3 && (
+                  <>
+                    <button onClick={() => handlePageClick(1)} className="page-number">
+                      1
+                    </button>
+                    {currentPage > 4 && <span className="page-ellipsis">...</span>}
+                  </>
+                )}
+
+                {getPageNumbers().map(pageNum => (
+                  <button
+                    key={pageNum}
+                    onClick={() => handlePageClick(pageNum)}
+                    className={`page-number ${currentPage === pageNum ? 'active' : ''}`}
+                  >
+                    {pageNum}
                   </button>
-                  {currentPage > 4 && <span className="page-ellipsis">...</span>}
-                </>
-              )}
+                ))}
 
-              {getPageNumbers().map(pageNum => (
-                <button
-                  key={pageNum}
-                  onClick={() => handlePageClick(pageNum)}
-                  className={`page-number ${currentPage === pageNum ? 'active' : ''}`}
-                >
-                  {pageNum}
-                </button>
-              ))}
+                {currentPage < totalPages - 2 && (
+                  <>
+                    {currentPage < totalPages - 3 && <span className="page-ellipsis">...</span>}
+                    <button onClick={() => handlePageClick(totalPages)} className="page-number">
+                      {totalPages}
+                    </button>
+                  </>
+                )}
+              </div>
 
-              {currentPage < totalPages - 2 && (
-                <>
-                  {currentPage < totalPages - 3 && <span className="page-ellipsis">...</span>}
-                  <button onClick={() => handlePageClick(totalPages)} className="page-number">
-                    {totalPages}
-                  </button>
-                </>
-              )}
+              <button 
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+                className="pagination-btn"
+              >
+                Next →
+              </button>
             </div>
-
-            <button 
-              onClick={handleNextPage}
-              disabled={currentPage === totalPages}
-              className="pagination-btn"
-            >
-              Next →
-            </button>
-          </div>
+          )}
         </div>
       )}
 
@@ -265,3 +377,4 @@ const SearchPage = () => {
 };
 
 export default SearchPage;
+

@@ -1,7 +1,19 @@
 import axiosInstance from '../api/axiosConfig';
 
-export const searchBooks = async (query, page = 1) => {
-  const response = await axiosInstance.get(`/books/search?query=${query}&page=${page}`);
+export const searchBooks = async (query, page = 1, filters = {}) => {
+  const { freeEbooks, printType } = filters;
+  
+  let url = `/books/search?query=${query}&page=${page}`;
+  
+  if (freeEbooks) {
+    url += '&filter=free-ebooks';
+  }
+  
+  if (printType && printType !== 'all') {
+    url += `&printType=${printType}`;
+  }
+  
+  const response = await axiosInstance.get(url);
   return response.data;
 };
 
@@ -24,3 +36,4 @@ export const deleteBook = async (id) => {
   const response = await axiosInstance.delete(`/books/${id}`);
   return response.data;
 };
+

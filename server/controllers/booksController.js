@@ -174,8 +174,8 @@ export const deleteBook = async (req, res) => {
 // @access  Public
 export const searchGoogleBooks = async (req, res) => {
     try {
-        const { query, page = 1 } = req.query; // Add page parameter
-        const booksPerPage = 10; // Books per page
+        const { query, page = 1, filter = 'paid-ebooks', printType = 'all' } = req.query;
+        const booksPerPage = 10;
         const startIndex = (page - 1) * booksPerPage;
 
         if (!query) {
@@ -185,10 +185,20 @@ export const searchGoogleBooks = async (req, res) => {
             });
         }
 
-        // Fetch from Google Books with pagination
-        const response = await axios.get(
-            `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=${booksPerPage}&startIndex=${startIndex}`
-        );
+        // Build API URL with filters
+        let apiUrl = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=${booksPerPage}&startIndex=${startIndex}`;
+        
+        // Add filter parameter (free-ebooks or paid-ebooks)
+        if (filter && filter !== 'all') {
+            apiUrl += `&filter=${filter}`;
+        }
+        
+        // Add printType parameter (books, magazines, or all)
+        if (printType && printType !== 'all') {
+            apiUrl += `&printType=${printType}`;
+        }
+
+        const response = await axios.get(apiUrl);
 
         const books = response.data.items?.map(item => ({
             googleId: item.id,
@@ -197,15 +207,22 @@ export const searchGoogleBooks = async (req, res) => {
             authors: item.volumeInfo.authors || ['Unknown Author'],
             description: item.volumeInfo.description || 'No description available',
             thumbnail: item.volumeInfo.imageLinks?.thumbnail || '',
-            link: item.volumeInfo.previewLink || item.volumeInfo.infoLink
+            link: item.volumeInfo.previewLink || item.volumeInfo.infoLink,
+            // Add additional info for filters
+            isFree: item.saleInfo?.saleability === 'FREE',
+            printType: item.volumeInfo?.printType || 'BOOK'
         })) || [];
 
         res.status(200).json({
             success: true,
             count: books.length,
-            totalItems: response.data.totalItems || 0, // Total available books
+            totalItems: response.data.totalItems || 0,
             currentPage: parseInt(page),
             booksPerPage: booksPerPage,
+            appliedFilters: {
+                filter: filter,
+                printType: printType
+            },
             data: books
         });
     } catch (error) {
