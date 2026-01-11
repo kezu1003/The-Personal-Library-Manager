@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import booksRoutes from "./routes/booksRoutes.js";
-import authRoutes from "./routes/authRoutes.js"; // ADD THIS
+import authRoutes from "./routes/authRoutes.js"; 
 import { connectDB } from "./config/db.js";
 import dotenv from "dotenv";
 
@@ -15,15 +15,15 @@ const app = express();
 const PORT = process.env.PORT || 5001;
 
 // Middleware
-app.use(cors()); // Enable CORS for frontend requests
-app.use(express.json()); // Parse JSON request bodies
-app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
+app.use(cors()); 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true })); 
 
 // Routes
-app.use("/api/books", booksRoutes); // Changed from /api/book to /api/books (plural is RESTful convention)
-app.use("/api/auth", authRoutes); // ADD THIS - Authentication routes
+app.use("/api/books", booksRoutes); 
+app.use("/api/auth", authRoutes); 
 
-// Health check route
+
 app.get("/", (req, res) => {
     res.json({ 
         message: "Personal Library Manager API is running",

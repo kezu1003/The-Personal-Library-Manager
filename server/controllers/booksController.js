@@ -62,7 +62,7 @@ export const createBook = async (req, res) => {
             description: description || 'No description available',
             thumbnail: thumbnail || '',
             link: link || '',
-            status: 'Want to Read', // Default status
+            status: 'Want to Read', 
             personalReview: ''
         });
 
