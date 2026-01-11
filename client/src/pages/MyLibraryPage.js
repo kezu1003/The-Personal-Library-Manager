@@ -109,7 +109,7 @@ const MyLibraryPage = () => {
 
   return (
     <div className="library-page">
-      {/* Enhanced Header with Stats */}
+      {/* Header with Stats */}
       <div className="library-header-enhanced">
         <div className="header-content">
           <div className="header-title-section">

@@ -49,11 +49,11 @@ const SearchPage = () => {
     }
   ];
 
-  // Auto-advance slideshow
+  
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 4000); // Change slide every 4 seconds
+    }, 4000); 
 
     return () => clearInterval(timer);
   }, [slides.length]);
@@ -145,7 +145,7 @@ const SearchPage = () => {
     setShowFilters(false);
   };
 
-  // Pagination functions
+  // Pagination function
   const totalPages = Math.ceil(totalItems / booksPerPage);
 
   const handlePreviousPage = () => {

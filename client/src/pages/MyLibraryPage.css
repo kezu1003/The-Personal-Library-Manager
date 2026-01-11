@@ -1,4 +1,4 @@
-/* Enhanced Library Page Styles */
+/* Page Styles */
 .library-page {
   max-width: 1400px;
   margin: 0 auto;
@@ -7,7 +7,6 @@
   z-index: 1;
 }
 
-/* Enhanced Header with Stats */
 .library-header-enhanced {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 20px;
@@ -85,7 +84,7 @@ body.dark-mode .library-header-enhanced {
   margin-top: 0.25rem;
 }
 
-/* Enhanced Error Message */
+/*Error Message */
 .error-message-enhanced {
   background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
   color: white;
@@ -102,7 +101,7 @@ body.dark-mode .library-header-enhanced {
   font-size: 1.5rem;
 }
 
-/* Enhanced Filter Section */
+/* Filter Section */
 .filter-section-enhanced {
   background: white;
   border-radius: 16px;
@@ -193,7 +192,7 @@ body.dark-mode .filter-btn-enhanced:hover {
   background: rgba(255, 255, 255, 0.4);
 }
 
-/* Enhanced Empty State */
+/* Empty State */
 .empty-state-enhanced {
   text-align: center;
   padding: 5rem 2rem;
@@ -257,14 +256,14 @@ body.dark-mode .empty-state-enhanced p {
   box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
 }
 
-/* Enhanced Books Grid */
+/* Books Grid */
 .books-grid-enhanced {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 2rem;
 }
 
-/* Enhanced Book Card */
+/* Book Card */
 .library-book-card-enhanced {
   background: white;
   border-radius: 16px;
@@ -289,7 +288,7 @@ body.dark-mode .library-book-card-enhanced:hover {
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
 }
 
-/* Enhanced Thumbnail */
+/* Thumbnail */
 .book-thumbnail-enhanced {
   position: relative;
   height: 280px;
@@ -350,7 +349,7 @@ body.dark-mode .book-thumbnail-enhanced {
   gap: 0.5rem;
 }
 
-/* Enhanced Book Details */
+/* Book Details */
 .book-details-enhanced {
   padding: 1.5rem;
   flex: 1;
@@ -437,7 +436,7 @@ body.dark-mode .section-label {
   font-size: 1.1rem;
 }
 
-/* Enhanced Status Section */
+/* Status Section */
 .book-status-section-enhanced {
   background: #f8f9fa;
   padding: 1rem;
@@ -473,7 +472,7 @@ body.dark-mode .status-select-enhanced {
   box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
 }
 
-/* Enhanced Review Section */
+/* Review Section */
 .review-display-enhanced {
   background: #f8f9fa;
   padding: 1rem;
@@ -548,7 +547,6 @@ body.dark-mode .review-textarea {
   box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
 }
 
-/* Enhanced Buttons */
 .btn-edit-review-enhanced,
 .btn-add-review-enhanced {
   display: inline-flex;
@@ -624,7 +622,7 @@ body.dark-mode .btn-cancel-enhanced {
   transform: translateY(-2px);
 }
 
-/* Enhanced Action Buttons */
+/* Action Buttons */
 .book-actions-enhanced {
   display: grid;
   grid-template-columns: 1fr 1fr;

@@ -197,7 +197,7 @@
   transform: scale(1.1);
 }
 
-/* Mobile adjustments for theme toggle */
+/* Mobile adjustments theme toggle */
 @media (max-width: 768px) {
   .theme-toggle {
     margin: 1rem;

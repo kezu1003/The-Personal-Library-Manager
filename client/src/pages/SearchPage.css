@@ -31,7 +31,6 @@ body.dark-mode .search-page::before {
   filter: brightness(0.6) contrast(1.1);
 }
 
-/* Enhanced header with glass effect */
 .search-header {
   text-align: center;
   margin-bottom: 2rem;
@@ -61,7 +60,7 @@ body.dark-mode .search-header {
   font-size: 1.1rem;
 }
 
-/* Glass effect for search form */
+/* Search form */
 .search-form {
   display: flex;
   gap: 1rem;
