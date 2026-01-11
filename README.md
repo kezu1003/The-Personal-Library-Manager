@@ -309,10 +309,6 @@ axiosInstance.interceptors.response.use(
 
 Contributions, issues, and feature requests are welcome!
 
-## 📝 License
-
-This project is [MIT](LICENSE) licensed.
-
 ## 👤 Author
 
 **Your Name**
@@ -327,7 +323,7 @@ This project is [MIT](LICENSE) licensed.
 
 ---
 
-**Made with ❤️ using MERN Stack**
+**Made with using MERN Stack**
 ```
 
 ---
