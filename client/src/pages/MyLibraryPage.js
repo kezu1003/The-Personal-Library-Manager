@@ -69,6 +69,35 @@ const MyLibraryPage = () => {
     return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
   };
 
+  // Get counts for each status
+  const statusCounts = {
+    'All': books.length,
+    'Want to Read': books.filter(b => b.status === 'Want to Read').length,
+    'Reading': books.filter(b => b.status === 'Reading').length,
+    'Completed': books.filter(b => b.status === 'Completed').length
+  };
+
+  // Get status icon
+  const getStatusIcon = (status) => {
+    const icons = {
+      'Want to Read': '📚',
+      'Reading': '📖',
+      'Completed': '✅',
+      'All': '🎯'
+    };
+    return icons[status] || '📚';
+  };
+
+  // Get status color
+  const getStatusColor = (status) => {
+    const colors = {
+      'Want to Read': '#2196F3',
+      'Reading': '#FF9800',
+      'Completed': '#4CAF50'
+    };
+    return colors[status] || '#666';
+  };
+
   if (loading) {
     return (
       <div className="loading-container">
@@ -80,128 +109,227 @@ const MyLibraryPage = () => {
 
   return (
     <div className="library-page">
-      <div className="library-header">
-        <h1>My Personal Library</h1>
-        <p>Total Books: {books.length}</p>
+      {/* Enhanced Header with Stats */}
+      <div className="library-header-enhanced">
+        <div className="header-content">
+          <div className="header-title-section">
+            <h1>📚 My Personal Library</h1>
+            <p className="header-subtitle">Your curated collection of books</p>
+          </div>
+          
+          <div className="library-stats">
+            <div className="stat-card">
+              <span className="stat-icon">📖</span>
+              <div className="stat-info">
+                <span className="stat-number">{books.length}</span>
+                <span className="stat-label">Total Books</span>
+              </div>
+            </div>
+            <div className="stat-card">
+              <span className="stat-icon">📚</span>
+              <div className="stat-info">
+                <span className="stat-number">{statusCounts['Want to Read']}</span>
+                <span className="stat-label">To Read</span>
+              </div>
+            </div>
+            <div className="stat-card">
+              <span className="stat-icon">🔖</span>
+              <div className="stat-info">
+                <span className="stat-number">{statusCounts['Reading']}</span>
+                <span className="stat-label">Reading</span>
+              </div>
+            </div>
+            <div className="stat-card">
+              <span className="stat-icon">✅</span>
+              <div className="stat-info">
+                <span className="stat-number">{statusCounts['Completed']}</span>
+                <span className="stat-label">Completed</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {error && <div className="error-message">{error}</div>}
+      {error && (
+        <div className="error-message-enhanced">
+          <span className="error-icon">⚠️</span>
+          {error}
+        </div>
+      )}
 
       {books.length > 0 && (
-        <div className="filter-buttons">
-          {['All', 'Want to Read', 'Reading', 'Completed'].map(status => (
-            <button
-              key={status}
-              className={`filter-btn ${filter === status ? 'active' : ''}`}
-              onClick={() => setFilter(status)}
-            >
-              {status}
-            </button>
-          ))}
+        <div className="filter-section-enhanced">
+          <div className="filter-header">
+            <h3>Filter by Status</h3>
+          </div>
+          <div className="filter-buttons-enhanced">
+            {['All', 'Want to Read', 'Reading', 'Completed'].map(status => (
+              <button
+                key={status}
+                className={`filter-btn-enhanced ${filter === status ? 'active' : ''}`}
+                onClick={() => setFilter(status)}
+              >
+                <span className="filter-icon">{getStatusIcon(status)}</span>
+                <span className="filter-text">{status}</span>
+                <span className="filter-count">{statusCounts[status]}</span>
+              </button>
+            ))}
+          </div>
         </div>
       )}
 
       {filteredBooks.length === 0 && !loading && (
-        <div className="empty-state">
-          <h2>No books {filter !== 'All' ? `with status "${filter}"` : 'in your library yet'}</h2>
-          <p>Start by searching and saving books!</p>
-          <a href="/" className="btn-primary">Search Books</a>
+        <div className="empty-state-enhanced">
+          <div className="empty-icon">📚</div>
+          <h2>No books found</h2>
+          <p>
+            {filter !== 'All' 
+              ? `You don't have any books with status "${filter}" yet.` 
+              : 'Your library is empty. Start building your collection!'}
+          </p>
+          <a href="/" className="btn-primary-enhanced">
+            <span>🔍</span>
+            Search Books
+          </a>
         </div>
       )}
 
-      <div className="books-grid">
+      <div className="books-grid-enhanced">
         {filteredBooks.map((book) => (
-          <div key={book._id} className="library-book-card">
-            <div className="book-thumbnail">
+          <div key={book._id} className="library-book-card-enhanced">
+            <div className="book-thumbnail-enhanced">
               {book.thumbnail ? (
                 <img src={book.thumbnail} alt={book.title} />
               ) : (
-                <div className="no-image">No Image</div>
+                <div className="no-image-enhanced">
+                  <span className="no-image-icon">📖</span>
+                  <span className="no-image-text">No Cover</span>
+                </div>
               )}
+              <div 
+                className="status-badge" 
+                style={{ backgroundColor: getStatusColor(book.status) }}
+              >
+                {getStatusIcon(book.status)} {book.status}
+              </div>
             </div>
             
-            <div className="book-details">
-              <h3 className="book-title">{book.title}</h3>
-              {book.subtitle && (
-                <p className="book-subtitle">{book.subtitle}</p>
-              )}
+            <div className="book-details-enhanced">
+              <div className="book-header-section">
+                <h3 className="book-title-enhanced">{book.title}</h3>
+                {book.subtitle && (
+                  <p className="book-subtitle-enhanced">{book.subtitle}</p>
+                )}
+                
+                <div className="book-authors-enhanced">
+                  <span className="author-icon">✍️</span>
+                  {book.authors.join(', ')}
+                </div>
+              </div>
               
-              <p className="book-authors">
-                By: {book.authors.join(', ')}
-              </p>
-              
-              <p className="book-description">
+              <p className="book-description-enhanced">
                 {truncateText(book.description)}
               </p>
 
-              <div className="book-status-section">
-                <label>Status:</label>
+              <div className="book-status-section-enhanced">
+                <label className="section-label">
+                  <span className="label-icon">🏷️</span>
+                  Reading Status
+                </label>
                 <select
                   value={book.status}
                   onChange={(e) => handleStatusChange(book._id, e.target.value)}
-                  className="status-select"
+                  className="status-select-enhanced"
                 >
-                  <option value="Want to Read">Want to Read</option>
-                  <option value="Reading">Reading</option>
-                  <option value="Completed">Completed</option>
+                  <option value="Want to Read">📚 Want to Read</option>
+                  <option value="Reading">📖 Reading</option>
+                  <option value="Completed">✅ Completed</option>
                 </select>
               </div>
 
               {editingBook === book._id ? (
-                <div className="review-edit">
+                <div className="review-edit-enhanced">
+                  <label className="section-label">
+                    <span className="label-icon">✏️</span>
+                    Edit Your Review
+                  </label>
                   <textarea
                     defaultValue={book.personalReview}
-                    placeholder="Write your personal review..."
+                    placeholder="Share your thoughts about this book..."
                     rows="4"
                     id={`review-${book._id}`}
+                    className="review-textarea"
                   />
-                  <div className="review-actions">
+                  <div className="review-actions-enhanced">
                     <button 
                       onClick={() => {
                         const review = document.getElementById(`review-${book._id}`).value;
                         handleReviewSubmit(book._id, review);
                       }}
-                      className="btn-save-review"
+                      className="btn-save-review-enhanced"
                     >
+                      <span>💾</span>
                       Save Review
                     </button>
                     <button 
                       onClick={() => setEditingBook(null)}
-                      className="btn-cancel"
+                      className="btn-cancel-enhanced"
                     >
+                      <span>✖️</span>
                       Cancel
                     </button>
                   </div>
                 </div>
               ) : (
-                <div className="review-display">
-                  <label>My Review:</label>
-                  <p className="personal-review">
-                    {book.personalReview || 'No review yet'}
-                  </p>
-                  <button 
-                    onClick={() => setEditingBook(book._id)}
-                    className="btn-edit-review"
-                  >
-                    {book.personalReview ? 'Edit Review' : 'Add Review'}
-                  </button>
+                <div className="review-display-enhanced">
+                  <label className="section-label">
+                    <span className="label-icon">💭</span>
+                    My Review
+                  </label>
+                  <div className="personal-review-enhanced">
+                    {book.personalReview ? (
+                      <>
+                        <p className="review-text">{book.personalReview}</p>
+                        <button 
+                          onClick={() => setEditingBook(book._id)}
+                          className="btn-edit-review-enhanced"
+                        >
+                          <span>✏️</span>
+                          Edit Review
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <p className="no-review-text">No review yet</p>
+                        <button 
+                          onClick={() => setEditingBook(book._id)}
+                          className="btn-add-review-enhanced"
+                        >
+                          <span>➕</span>
+                          Add Review
+                        </button>
+                      </>
+                    )}
+                  </div>
                 </div>
               )}
               
-              <div className="book-actions">
+              <div className="book-actions-enhanced">
                 <a 
                   href={book.link} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="btn-view"
+                  className="btn-view-enhanced"
                 >
-                  View on Google Books
+                  <span>🔗</span>
+                  View Details
                 </a>
                 <button 
                   onClick={() => handleDelete(book._id)}
-                  className="btn-delete"
+                  className="btn-delete-enhanced"
                 >
-                  Remove from Library
+                  <span>🗑️</span>
+                  Remove
                 </button>
               </div>
             </div>
@@ -213,6 +341,4 @@ const MyLibraryPage = () => {
 };
 
 export default MyLibraryPage;
-
-
 
