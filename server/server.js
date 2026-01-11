@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
-import booksRoutes from "./routes/bookRoutes.js";
-import authRoutes from "./routes/authRoutes.js";
+import booksRoutes from "./routes/booksRoutes.js";
+import authRoutes from "./routes/authRoutes.js"; // ADD THIS
 import { connectDB } from "./config/db.js";
 import dotenv from "dotenv";
 
@@ -14,27 +14,20 @@ connectDB();
 const app = express();
 const PORT = process.env.PORT || 5001;
 
-// CORS configuration for production
-const corsOptions = {
-  origin: process.env.CLIENT_URL || 'http://localhost:3000',
-  credentials: true,
-  optionsSuccessStatus: 200
-};
-
-app.use(cors(corsOptions));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Middleware
+app.use(cors()); // Enable CORS for frontend requests
+app.use(express.json()); // Parse JSON request bodies
+app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 
 // Routes
-app.use("/api/books", booksRoutes);
-app.use("/api/auth", authRoutes);
+app.use("/api/books", booksRoutes); // Changed from /api/book to /api/books (plural is RESTful convention)
+app.use("/api/auth", authRoutes); // ADD THIS - Authentication routes
 
 // Health check route
 app.get("/", (req, res) => {
     res.json({ 
-        message: "BookShelf API is running",
-        version: "1.0.0",
-        status: "OK"
+        message: "Personal Library Manager API is running",
+        version: "1.0.0"
     });
 });
 
