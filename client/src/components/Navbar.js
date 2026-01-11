@@ -24,7 +24,12 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
-          📚 Library Manager
+          <img 
+            src="/logo.png" 
+            alt="BookShelf Logo" 
+            className="logo-image"
+          />
+          <span className="logo-text">BOOKSHELF</span>
         </Link>
 
         {/* Mobile Menu Button */}

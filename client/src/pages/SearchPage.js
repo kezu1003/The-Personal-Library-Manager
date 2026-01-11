@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { searchBooks, saveBook } from '../services/bookService';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -22,8 +23,53 @@ const SearchPage = () => {
   const [printType, setPrintType] = useState('all');
   const [showFilters, setShowFilters] = useState(false);
 
+  // Slideshow state
+  const [currentSlide, setCurrentSlide] = useState(0);
+
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+
+  // Slideshow images
+  const slides = [
+    {
+      url: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1200&q=80',
+      caption: 'Discover Your Next Great Read'
+    },
+    {
+      url: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1200&q=80',
+      caption: 'Build Your Personal Library'
+    },
+    {
+      url: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=1200&q=80',
+      caption: 'Track Your Reading Journey'
+    },
+    {
+      url: 'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=1200&q=80',
+      caption: 'Organize and Review Your Books'
+    }
+  ];
+
+  // Auto-advance slideshow
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 4000); // Change slide every 4 seconds
+
+    return () => clearInterval(timer);
+  }, [slides.length]);
+
+  const goToSlide = (index) => {
+    setCurrentSlide(index);
+  };
+
+  const previousSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+
 
   const handleSearch = async (e, page = 1) => {
     if (e) e.preventDefault();
@@ -147,9 +193,49 @@ const SearchPage = () => {
   return (
     <div className="search-page">
       <div className="search-header">
-        <h1>📚 Personal Library Manager</h1>
-        <p>Search for books and build your personal library</p>
+        <div className="search-logo-container">
+            <img src="/logo.png" alt="BookShelf" className="search-page-logo" />
+            <h1>BOOKSHELF</h1>
+        </div>
+        <h4>Your personal library manager - Search, save, and organize your books</h4>
+        </div>
+
+        <div className="slideshow-container">
+        <div className="slideshow">
+          {slides.map((slide, index) => (
+            <div
+              key={index}
+              className={`slide ${index === currentSlide ? 'active' : ''}`}
+              style={{ backgroundImage: `url(${slide.url})` }}
+            >
+              <div className="slide-overlay">
+                <h3 className="slide-caption">{slide.caption}</h3>
+              </div>
+            </div>
+          ))}
+
+          {/* Navigation Arrows */}
+          <button className="slide-arrow prev" onClick={previousSlide}>
+            ❮
+          </button>
+          <button className="slide-arrow next" onClick={nextSlide}>
+            ❯
+          </button>
+        </div>
+
+        {/* Dots Navigation */}
+        <div className="slide-dots">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              className={`dot ${index === currentSlide ? 'active' : ''}`}
+              onClick={() => goToSlide(index)}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
       </div>
+
 
       <form onSubmit={handleSearch} className="search-form">
         <input
@@ -369,7 +455,7 @@ const SearchPage = () => {
       {!loading && !hasSearched && (
         <div className="welcome-message">
           <h2>Welcome to Personal Library Manager</h2>
-          <p>Start by searching for books above</p>
+          <h3>Start by searching for books above</h3>
         </div>
       )}
     </div>
